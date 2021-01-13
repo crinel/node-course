@@ -1,0 +1,5 @@
+node_modules
+.idea
+config/environments/development.js
+config/environments/production.js
+package-lock.json
