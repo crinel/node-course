@@ -4,10 +4,7 @@ const User = require("../models/users");
 
 const getUsers = (req, res, next) => {
   User.find((err, result) => {
-    if (err) {
-      //console.log("GET error ", err);
-      return res.status(404).json(err);
-    }
+    returnError(err);
 
     return res.json(result);
   });
@@ -21,11 +18,7 @@ const getUserById = (req, res, next) => {
       _id: userId,
     },
     (err, result) => {
-      if (err) {
-        //console.log("GET error ", err);
-        return res.status(404).json(err);
-      }
-
+      returnError(err);
       return res.json(result);
     }
   );
@@ -34,36 +27,38 @@ const getUserById = (req, res, next) => {
 const findUserGeneric = (req, res, next) => {
   const { userId } = req.params;
 
-  User.find(
-    {
-      _id: userId,
-    },
-    (err, result) => {
-      if (err) {
-        return res.status(404).json(err);
-      }
-      next();
+  User.find({ _id: userId }, (err, result) => {
+    returnError(err);
+
+    req.resources.user = result;
+    next();
+  });
+};
+
+const deleteById2 = (req, res, next) => {
+  const { userId } = req.params;
+  const params = { _id: userId };
+
+  User.deleteOne(params, (errDelete, resultDelete) => {
+    returnError(errDelete);
+
+    if (req.resources.user) {
+      return res.json(req.resources.user);
+    } else {
+      return res.json(result);
     }
-  );
+  });
 };
 
 const deleteById = (req, res, next) => {
   const { userId } = req.params;
-
-  const params = {
-    _id: userId,
-  };
+  const params = { _id: userId };
 
   User.find(params, (err, result) => {
-    if (err) {
-      return res.status(404).json(err);
-    }
+    returnError(err);
 
     User.deleteOne(params, (errDelete, resultDelete) => {
-      if (err) {
-        return res.status(404).json(errDelete);
-      }
-
+      returnError(err);
       return res.json(result);
     });
   });
@@ -78,13 +73,16 @@ const createUser = (req, res, next) => {
   const user = new User(req.body);
 
   user.save((err, result) => {
-    if (err) {
-      //console.log("POST error ", err);
-      return res.status(404).json(err);
-    }
+    returnError(err);
 
     return res.json(result);
   });
+};
+
+const returnError = (err) => {
+  if (err) {
+    return res.status(404).json(err);
+  }
 };
 
 module.exports = {
@@ -92,6 +90,7 @@ module.exports = {
   getUserById,
   findUserGeneric,
   deleteById,
+  deleteById2,
   putUsers,
   createUser,
 };

@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.get("/users", usersCtrl.getUsers);
 router.get("/users/:userId", usersCtrl.getUserById);
-router.delete("/users/:userId", usersCtrl.deleteById);
+// router.delete("/users/:userId", usersCtrl.deleteById);
+router.delete("/users/:userId", usersCtrl.findUserGeneric,  usersCtrl.deleteById2);
 
 router.post("/users", usersCtrl.createUser);
 
