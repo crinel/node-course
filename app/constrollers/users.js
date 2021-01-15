@@ -5,26 +5,11 @@ const User = require("../models/users");
 const getUsers = (req, res, next) => {
   User.find((err, result) => {
     returnError(err);
-
     return res.json(result);
   });
 };
 
-const getUserById = (req, res, next) => {
-  const { userId } = req.params;
-
-  User.find(
-    {
-      _id: userId,
-    },
-    (err, result) => {
-      returnError(err);
-      return res.json(result);
-    }
-  );
-};
-
-const findUserGeneric = (req, res, next) => {
+const getUserByIdGeneric = (req, res, next) => {
   const { userId } = req.params;
 
   User.find({ _id: userId }, (err, result) => {
@@ -35,19 +20,22 @@ const findUserGeneric = (req, res, next) => {
   });
 };
 
-const deleteById2 = (req, res, next) => {
+const deleteByIdGeneric = (req, res, next) => {
   const { userId } = req.params;
   const params = { _id: userId };
 
   User.deleteOne(params, (errDelete, resultDelete) => {
     returnError(errDelete);
-
-    if (req.resources.user) {
-      return res.json(req.resources.user);
-    } else {
-      return res.json(result);
-    }
+    next();
   });
+};
+
+const returnUserById = (req, res, next) => {
+  if (req.resources.user) {
+    return res.json(req.resources.user);
+  } else {
+    return res.json(result);
+  }
 };
 
 const deleteById = (req, res, next) => {
@@ -87,10 +75,10 @@ const returnError = (err) => {
 
 module.exports = {
   getUsers,
-  getUserById,
-  findUserGeneric,
+  returnUserById,
+  getUserByIdGeneric,
   deleteById,
-  deleteById2,
+  deleteByIdGeneric,
   putUsers,
   createUser,
 };

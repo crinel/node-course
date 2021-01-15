@@ -6,9 +6,19 @@ const usersCtrl = require("./../constrollers/users");
 const router = express.Router();
 
 router.get("/users", usersCtrl.getUsers);
-router.get("/users/:userId", usersCtrl.getUserById);
+
+router.get(
+  "/users/:userId",
+  usersCtrl.getUserByIdGeneric,
+  usersCtrl.returnUserById
+);
 // router.delete("/users/:userId", usersCtrl.deleteById);
-router.delete("/users/:userId", usersCtrl.findUserGeneric,  usersCtrl.deleteById2);
+router.delete(
+  "/users/:userId",
+  usersCtrl.getUserByIdGeneric,
+  usersCtrl.deleteByIdGeneric,
+  usersCtrl.returnUserById
+);
 
 router.post("/users", usersCtrl.createUser);
 
