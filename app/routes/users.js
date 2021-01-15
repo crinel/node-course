@@ -5,10 +5,15 @@ const authCtrl = require("./../constrollers/auth");
 const usersCtrl = require("./../constrollers/users");
 const router = express.Router();
 
-router.get("/users", authCtrl.login, usersCtrl.getUsers1, usersCtrl.getUsers2);
+router.get("/users", usersCtrl.getUsers);
+router.get("/users/:userId", usersCtrl.getUserById);
 
-router.post("/users", authCtrl.login, usersCtrl.postUsers);
+router.post("/users", usersCtrl.createUser);
 
-router.put("/users", authCtrl.login, usersCtrl.putUsers);
+// router.get("/users", authCtrl.login, usersCtrl.getUsers);
+// router.get("/users/:userId", authCtrl.login, usersCtrl.getUserById);
+//
+// router.post("/users", authCtrl.login, usersCtrl.createUser);
+// router.put("/users", authCtrl.login, usersCtrl.putUsers);
 
 module.exports = router;
