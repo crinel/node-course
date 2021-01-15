@@ -26,5 +26,13 @@ function initMongoose() {
   //   console.log("connected to mongodb");
   // });
 
-    // process.on('SIGINT', cleanup)
+  process.on("SIGINT", cleanup);
+  process.on("SIGTERM", cleanup);
+  process.on("SIGHUP", cleanup);
+}
+
+function cleanup() {
+  mongoose.connection.close(() => {
+    process.exit();
+  });
 }

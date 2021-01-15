@@ -31,6 +31,24 @@ const getUserById = (req, res, next) => {
   );
 };
 
+const deleteById = (req, res, next) => {
+  const { userId } = req.params;
+
+  User.deleteOne(
+    {
+      _id: userId,
+    },
+    (err, result) => {
+      if (err) {
+        //console.log("GET error ", err);
+        return res.status(404).json(err);
+      }
+
+      return res.json(result);
+    }
+  );
+};
+
 const putUsers = (req, res, next) => {
   return res.json({ text: "PUT call" });
 };
@@ -52,6 +70,7 @@ const createUser = (req, res, next) => {
 module.exports = {
   getUsers,
   getUserById,
+  deleteById,
   putUsers,
   createUser,
 };
