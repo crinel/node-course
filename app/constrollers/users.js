@@ -26,6 +26,8 @@ const deleteByIdGeneric = (req, res, next) => {
 
   User.deleteOne(params, (errDelete, resultDelete) => {
     returnError(errDelete);
+
+    req.resources.resultPrevOperation = resultDelete;
     next();
   });
 };
@@ -33,8 +35,10 @@ const deleteByIdGeneric = (req, res, next) => {
 const returnUserById = (req, res, next) => {
   if (req.resources.user) {
     return res.json(req.resources.user);
+  } else if (req.resources.resultPrevOperation) {
+    return res.json(req.resources.resultPrevOperation);
   } else {
-    return res.json(result);
+    return res.send("No user or no previous operation called !");
   }
 };
 
