@@ -4,7 +4,7 @@ const User = require("../models/users");
 
 const getUsers = (req, res, next) => {
   User.find((err, result) => {
-    returnError(err);
+    returnError(res, err);
     return res.json(result);
   });
 };
@@ -13,9 +13,9 @@ const getUserByIdGeneric = (req, res, next) => {
   const { userId } = req.params;
 
   User.find({ _id: userId }, (err, result) => {
-    returnError(err);
+    returnError(res, err);
 
-    req.resources.user = result;
+    req.resources.entity = result;
     next();
   });
 };
@@ -25,7 +25,7 @@ const deleteByIdGeneric = (req, res, next) => {
   const params = { _id: userId };
 
   User.deleteOne(params, (errDelete, resultDelete) => {
-    returnError(errDelete);
+    returnError(res, errDelete);
 
     req.resources.resultPrevOperation = resultDelete;
     next();
@@ -33,8 +33,8 @@ const deleteByIdGeneric = (req, res, next) => {
 };
 
 const returnUserById = (req, res, next) => {
-  if (req.resources.user) {
-    return res.json(req.resources.user);
+  if (req.resources.entity) {
+    return res.json(req.resources.entity);
   } else if (req.resources.resultPrevOperation) {
     return res.json(req.resources.resultPrevOperation);
   } else {
@@ -47,10 +47,10 @@ const deleteById = (req, res, next) => {
   const params = { _id: userId };
 
   User.find(params, (err, result) => {
-    returnError(err);
+    returnError(res, err);
 
     User.deleteOne(params, (errDelete, resultDelete) => {
-      returnError(err);
+      returnError(res, err);
       return res.json(result);
     });
   });
@@ -65,13 +65,13 @@ const createUser = (req, res, next) => {
   const user = new User(req.body);
 
   user.save((err, result) => {
-    returnError(err);
+    returnError(res, err);
 
     return res.json(result);
   });
 };
 
-const returnError = (err) => {
+const returnError = (res, err) => {
   if (err) {
     return res.status(404).json(err);
   }
