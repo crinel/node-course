@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require("express");
-const authCtrl = require("./../constrollers/auth");
+// const authCtrl = require("./../constrollers/auth");
 const usersCtrl = require("./../constrollers/users");
 const router = express.Router();
 

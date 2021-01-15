@@ -31,22 +31,42 @@ const getUserById = (req, res, next) => {
   );
 };
 
-const deleteById = (req, res, next) => {
+const findUserGeneric = (req, res, next) => {
   const { userId } = req.params;
 
-  User.deleteOne(
+  User.find(
     {
       _id: userId,
     },
     (err, result) => {
       if (err) {
-        //console.log("GET error ", err);
         return res.status(404).json(err);
+      }
+      next();
+    }
+  );
+};
+
+const deleteById = (req, res, next) => {
+  const { userId } = req.params;
+
+  const params = {
+    _id: userId,
+  };
+
+  User.find(params, (err, result) => {
+    if (err) {
+      return res.status(404).json(err);
+    }
+
+    User.deleteOne(params, (errDelete, resultDelete) => {
+      if (err) {
+        return res.status(404).json(errDelete);
       }
 
       return res.json(result);
-    }
-  );
+    });
+  });
 };
 
 const putUsers = (req, res, next) => {
@@ -70,6 +90,7 @@ const createUser = (req, res, next) => {
 module.exports = {
   getUsers,
   getUserById,
+  findUserGeneric,
   deleteById,
   putUsers,
   createUser,
