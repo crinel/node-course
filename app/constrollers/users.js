@@ -64,6 +64,14 @@ const createUser = (req, res, next) => {
   console.log(" req.body  ", req.body);
   const user = new User(req.body);
 
+  if (user.name.length < 3) {
+    // return next("some argumesnt");
+    return next({
+      statusCode: 422,
+      message: "The name is smaller then 3 chars !",
+    });
+  }
+
   user.save((err, result) => {
     returnError(res, err);
 
@@ -73,8 +81,13 @@ const createUser = (req, res, next) => {
 
 const returnError = (res, err) => {
   console.log("the res and err ", err);
+  // if (err) {
+  //   return res.status(404).json(err);
+  // }
   if (err) {
-    return res.status(404).json(err);
+    // the statusCode property does ot exist, we put it depending on own logic
+    err.statusCode = 422;
+    return next(err);
   }
 };
 
