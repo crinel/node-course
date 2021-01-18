@@ -3,6 +3,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const { userModel } = require("../constants");
+
 const usersSchema = new Schema(
   {
     createdAt: Number,
@@ -25,4 +27,4 @@ const usersSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("user", usersSchema, "users");
+module.exports = mongoose.model(userModel, usersSchema, "users");

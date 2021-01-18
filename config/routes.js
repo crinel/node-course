@@ -9,10 +9,9 @@ module.exports = {
 function initRoutes(app) {
   console.log("dirname ", __dirname);
   const routesPath = path.join(__dirname, "../app/routes");
-  const routes = ["users"];
+  const routes = ["users", "accounts"];
 
   routes.forEach(function (route) {
-    console.log("routes ", route);
     app.use(require(`${routesPath}/${route}`));
   });
 
