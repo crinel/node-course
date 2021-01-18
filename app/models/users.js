@@ -19,6 +19,29 @@ const usersSchema = new Schema(
       required: true,
       unique: false,
     },
+    //nested data
+    address: {
+      streetName: {
+        type: String,
+        required: true,
+      },
+      streetNumber: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+    },
+    reviews: [
+      {
+        description: {
+          type: String,
+        },
+        rate: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: {

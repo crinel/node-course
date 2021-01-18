@@ -61,7 +61,7 @@ const putUsers = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  //console.log(" req.body  ", req.body);
+  console.log(" req.body  ", req.body);
   const user = new User(req.body);
 
   user.save((err, result) => {
@@ -72,6 +72,7 @@ const createUser = (req, res, next) => {
 };
 
 const returnError = (res, err) => {
+  console.log("the res and err ", err);
   if (err) {
     return res.status(404).json(err);
   }
